@@ -4,6 +4,7 @@
 #include "DBEngine/Graphics/ShaderProgram.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "DBEngine/Graphics/Texture.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -14,12 +15,16 @@ GraphicsEngine::GraphicsEngine()
 
 GraphicsEngine::~GraphicsEngine()
 {
+	// remove textures from memory
+	TextureStack.clear();
+
 	// this will handle deleting the SDL window from memory
 	SDL_DestroyWindow(SdlWindow);
 	// destroy the GL context for SDL
 	SDL_GL_DeleteContext(SdlGLContext);
 	// close the SDL framework
 	SDL_Quit();
+
 	cout << "Destroy Graphics Engine..." << endl;
 }
 
@@ -170,6 +175,40 @@ void GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)
 
 	// add the shader to our graphics engine
 	Shader = NewShader;
+}
+
+TexturePtr GraphicsEngine::CreateTexture(const char* FilePath)
+{
+	TexturePtr NewTexture = nullptr;
+
+	// Run through all the textures and check if one with same path exists
+	for (TexturePtr TestTexture : TextureStack) {
+		// if we find a texture with the same file path
+		if (TestTexture->GetFilePath() == FilePath) {
+			// pass in the already created texture
+			NewTexture = TestTexture;
+			cout << "Texture found! Assigning current texture." << endl;
+			break;
+		}
+	}
+
+	// if there is no texture alredy in existance
+	if (NewTexture == nullptr) {
+		cout << "Creating a new texture..." << endl;
+
+		// create a new texture as a shared_ptr
+		NewTexture = make_shared<Texture>();
+
+		// if the file was found, assign it to the texture stack
+		if (NewTexture->CreateTextureFromFilePath(FilePath)) {
+			cout << "Texture " << NewTexture->GetID() << " creation success! Adding to Texture Stack." << endl;
+
+			// ass the texture to the texture stack
+			TextureStack.push_back(NewTexture);
+		}
+	}
+
+	return NewTexture;
 }
 
 void GraphicsEngine::HandleWireframeMode(bool bShowWireframeMode)
