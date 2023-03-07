@@ -51,7 +51,7 @@ void Game::Run()
 			L"Game/Shaders/TextureShader/TextureShader.sfrag"
 			});
 
-		Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
+		Graphics->CreateTexture("Game/Textures/Cobblestone.jpg");
 
 		// create VAOs
 		Graphics->CreateVAO(GeometricShapes::Square);
