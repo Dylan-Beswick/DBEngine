@@ -1,6 +1,8 @@
 #pragma once
 #include "DBEngine/CoreMinimal.h"
 
+class Input;
+
 class Game {
 public:
 	// Get the game instance or create one if it doesn't exist
@@ -12,6 +14,18 @@ public:
 	// Start the game/app
 	// Load the window
 	void Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight);
+
+	// get precise delta time
+	double GetDeltaTime() { return DeltaTime; }
+
+	// get less precise delta time
+	float GetFDeltaTime() { return static_cast<float>(DeltaTime); }
+
+	// return the graphics engine
+	GraphicsEnginePtr GetGraphicsEngine() { return Graphics; }
+
+	// set the bIsGameOver to true
+	void CloseApp() { bIsGameOver = true; }
 
 private:
 	Game();
@@ -39,4 +53,14 @@ private:
 
 	// shared pointer to the Graphics class
 	GraphicsEnginePtr Graphics;
+
+	// this is the time between each frame
+	double DeltaTime;
+
+	// read the input of the player
+	Input* GameInput;
+
+	// Temporary mesh variables
+	MeshPtr Poly2;
+	MeshPtr Poly;
 };

@@ -20,13 +20,13 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		ChosenPositions = SquarePositions;
 		ChosenIndices = SquareIndices;
 		break;
-	case GeometricShapes::Trapezium:
-		ChosenPositions = TrapeziumPositions;
-		ChosenIndices = TrapeziumIndices;
-		break;
 	case GeometricShapes::Circle:
 		ChosenPositions = CirclePositions;
 		ChosenIndices = CircleIndices;
+		break;
+	case GeometricShapes::Cube:
+		ChosenPositions = CubePositions;
+		ChosenIndices = CubeIndicies;
 		break;
 	default:
 		break;
